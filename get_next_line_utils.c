@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/22 16:33:13 by cyuuki            #+#    #+#             */
+/*   Updated: 2020/12/22 17:40:58 by cyuuki           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static	size_t		ft_strlen(const char *str)
@@ -58,4 +70,24 @@ char				*ft_strchr(const char *str, int ch)
 		return (str2);
 	}
 	return (NULL);
+}
+
+char		*ft_strdup(const char *str)
+{
+	char	*string;
+	size_t	i;
+
+	i = 0;
+	i = ft_strlen(str);
+	string = (char *)malloc(sizeof(char) * (i + 1));
+	if (!string)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		string[i] = str[i];
+		i++;
+	}
+	string[i] = '\0';
+	return (string);
 }
