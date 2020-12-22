@@ -15,24 +15,19 @@ int get_next_line(int fd, char **line)
 	while (cache[poin] != '\n' || (add = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[add] = '\0';
-
 		//add = add_check(line, buffer, &cache);
 		if ((poin = ft_strchr(buffer, '\n')))
 		{
 			*poin = '\0';
 			poin++;
 			while (poin != '\0')
-			{
-				cache[poin];
-				poin++;
-			}
+				cache[poin++];
 		}
 		*line = ft_strjoin(*line, buffer);
-		return ((line) ? 1 : 0)
 	}
 	*line = ft_strjoin(*line, cache);
 	free(*cache);
-	return (0);
+	return ((line) ? 1 : 0);
 }
 
 int main(void)
