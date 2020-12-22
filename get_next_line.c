@@ -5,32 +5,43 @@
 int get_next_line(int fd, char **line)
 {
 	char buffer[BUFFER_SIZE + 1];
-	//static char *cache = NULL;
+	static char *cache;
 	int add;
 	char *poin;
 
 	*line = '\0';
 	if (!(*line = (char *)malloc(1)) || line )
 		return (-1);
-	while ((add = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while (cache[poin] != '\n' || (add = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[add] = '\0';
+
+		//add = add_check(line, buffer, &cache);
 		if ((poin = ft_strchr(buffer, '\n')))
 		{
 			*poin = '\0';
+			poin++;
+			while (poin != '\0')
+			{
+				cache[poin];
+				poin++;
+			}
 		}
 		*line = ft_strjoin(*line, buffer);
+		return ((line) ? 1 : 0)
 	}
+	*line = ft_strjoin(*line, cache);
+	free(*cache);
 	return (0);
 }
 
 int main(void)
 {
-	char *line;
+	char *string;
 	int fd;
 
 	fd = open("tnt.txt", O_RDONLY);
-	get_next_line(fd, &line);
-	printf("%s\n", line);
+	get_next_line(fd, &string);
+	printf("%s\n", string);
 	return (0);
 }
