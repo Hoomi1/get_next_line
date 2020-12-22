@@ -6,4 +6,5 @@
 int		get_next_line(int fd, char **line);
 char		*ft_strchr(const char *str, int ch);
 char *ft_strjoin(char const *s1, char const *s2);
+# define BUFFER_SIZE 35
 #endif 
