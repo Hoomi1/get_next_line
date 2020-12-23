@@ -6,7 +6,7 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 16:32:53 by cyuuki            #+#    #+#             */
-/*   Updated: 2020/12/22 20:24:45 by cyuuki           ###   ########.fr       */
+/*   Updated: 2020/12/23 21:09:44 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ int			get_next_line(int fd, char **line);
 char		*ft_strchr(const char *str, int ch);
 char 		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strdup(const char *str);
-# define 	BUFFER_SIZE 1
+//# define 	BUFFER_SIZE 1
 #endif
