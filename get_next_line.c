@@ -6,7 +6,7 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 16:33:06 by cyuuki            #+#    #+#             */
-/*   Updated: 2020/12/23 21:11:54 by cyuuki           ###   ########.fr       */
+/*   Updated: 2020/12/26 19:52:47 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,23 @@
 
 static int add_check(char **line, char *buffer, char **cache)
 {
-	char *tmp;
 	char *point;
-	int i;
+	char *temp;
 
-	i = 0;
 	if (!buffer)
 		return (0);
-	if((point = ft_strchr(buffer, '\n')))
+	if ((point = ft_strchr(buffer, '\n')))
 	{
 		*point = '\0';
-		point++;
-		if(*point != '\0')
-		*cache = ft_strdup(point);
-	}
-	tmp = ft_strjoin(*line, buffer);
-	free(*line);
-	*line = tmp;
-	if(point)
+		if(*(++point) != '\0')
+			*cache = ft_strdup(point);
+		temp = *line;
+		*line = ft_strjoin(*line, buffer);
+		free(*temp);
 		return (1);
-	else
-		return (0);
+	}
+		*line = ft_strjoin(*line, buffer);
+	return (0);
 }
 
 int get_next_line(int fd, char **line)
@@ -44,12 +40,34 @@ int get_next_line(int fd, char **line)
 	char buffer[BUFFER_SIZE + 1];
 	int add;
 	static char *cache;
-	int i;
+	char *point;
+	char *temp;
 
-	i = 2;
 	if ((fd < 0) || (line == NULL) || (BUFFER_SIZE < 1) || !(*line = (char *)malloc(1)))
 		return (-1);
 	**line = '\0';
+	if (cache)
+	{
+		if ((point = ft_strchr(cache, '\n')))
+		{
+			*point = '\0';
+			temp = *line;
+			*line = ft_strjoin(*line, cache);
+			free(temp);
+			if(*(++point) != '\0')
+				cache = ft_strdup(point);
+			else
+				cache = NULL;
+			return (1);
+		}
+		else
+		{
+			temp = *line;
+			*line = ft_strjoin(*line, cache);
+			cache = NULL;
+			free(temp);
+		}
+	}
 	while ((add = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[add] = '\0';
@@ -57,9 +75,9 @@ int get_next_line(int fd, char **line)
 		if(add == 1 || add == -1)
 			break;
 	}
-	if(add == -1)
+	if (add == -1)
 		return (-1);
-	if(add == 1)
+	if (add == 1)
 		return (1);
 	else
 		return (0);
