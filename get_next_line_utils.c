@@ -6,7 +6,7 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 16:33:13 by cyuuki            #+#    #+#             */
-/*   Updated: 2020/12/22 17:40:58 by cyuuki           ###   ########.fr       */
+/*   Updated: 2020/12/28 20:07:07 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static	size_t		ft_strlen(const char *str)
 
 char				*ft_strjoin(char const *s1, char const *s2)
 {
-	char *str;
-	size_t len;
+	char	*str;
+	size_t	len;
 
 	if (!s1)
 		return (NULL);
@@ -72,7 +72,7 @@ char				*ft_strchr(const char *str, int ch)
 	return (NULL);
 }
 
-char		*ft_strdup(const char *str)
+char				*ft_strdup(const char *str)
 {
 	char	*string;
 	size_t	i;
