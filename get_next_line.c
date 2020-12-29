@@ -11,14 +11,15 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-//#include <stdio.h>
-//#include <fcntl.h>
+#include <stdio.h>
+#include <fcntl.h>
 
 static char		*add_check_cache(char **cache, char **line, char *point)
 {
 	char *temp;
 
-	*point = '\0';
+	if ((point = ft_strchr(*cache, '\n')))
+		*point = '\0';
 	point++;
 	temp = *line;
 	*line = ft_strjoin(*line, *cache);
@@ -58,8 +59,7 @@ int				get_next_line(int fd, char **line)
 	char			*point;
 	char			*temp;
 
-	if ((fd < 0) || (line == NULL) || (BUFFER_SIZE < 1)
-		|| !(*line = (char *)malloc(1)))
+	if (fd < 0 || BUFFER_SIZE < 1 || !line || !(*line = (char *)malloc(1)))
 		return (-1);
 	**line = '\0';
 	if (cache)
@@ -69,19 +69,19 @@ int				get_next_line(int fd, char **line)
 			*line = add_check_cache(&cache, line, point);
 			return (1);
 		}
-		temp = *line;
-		*line = ft_strjoin(*line, cache);
+		add = add_check(cache, line, &point);
 		free(cache);
 		cache = NULL;
-		free(temp);
 	}
 	while ((add = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[add] = '\0';
 		add = add_check(buffer, line, &cache);
 		if (add == 1 || add == -1)
-			break ;
+			break;
 	}
+	if (add == -1)
+		free(*line);
 	if (add == 0)
 		cache = NULL;
 	return ((add == 0) ? 0 : 1);
