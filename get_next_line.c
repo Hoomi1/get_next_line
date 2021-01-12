@@ -6,7 +6,7 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 20:13:02 by cyuuki            #+#    #+#             */
-/*   Updated: 2020/12/28 20:59:25 by cyuuki           ###   ########.fr       */
+/*   Updated: 2021/01/12 16:44:55 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,22 @@ static int		add_check(char *buffer, char **line, char **cache)
 	char *point;
 	char *temp;
 
+	if (!buffer)
+		return (0);
 	if ((point = ft_strchr(buffer, '\n')))
 	{
 		*point = '\0';
 		if ((*(++point)) != '\0')
 			*cache = ft_strdup(point);
 		temp = *line;
-		*line = ft_strjoin(*line, buffer);
+		if (!(*line = ft_strjoin(*line, buffer)))
+			return (-1);
 		free(temp);
 		return (1);
 	}
 	temp = *line;
-	*line = ft_strjoin(*line, buffer);
+	if (!(*line = ft_strjoin(*line, buffer)))
+		return (-1);
 	free(temp);
 	return (0);
 }
@@ -57,7 +61,6 @@ int				get_next_line(int fd, char **line)
 	int				add;
 	static	char	*cache;
 	char			*point;
-	char			*temp;
 
 	if (fd < 0 || BUFFER_SIZE < 1 || !line || !(*line = (char *)malloc(1)))
 		return (-1);
@@ -65,10 +68,11 @@ int				get_next_line(int fd, char **line)
 	if (cache)
 	{
 		if ((point = ft_strchr(cache, '\n')))
-		{
-			*line = add_check_cache(&cache, line, point);
-			return (1);
-		}
+			return ((!(*line = add_check_cache(&cache, line, point))) ? -1 : 1);
+		/*if(!(*line = add_check_cache(&cache, line, point)))
+			return (-1);
+		else
+			return (1);*/
 		add = add_check(cache, line, &point);
 		free(cache);
 		cache = NULL;
@@ -78,7 +82,7 @@ int				get_next_line(int fd, char **line)
 		buffer[add] = '\0';
 		add = add_check(buffer, line, &cache);
 		if (add == 1 || add == -1)
-			break;
+			break ;
 	}
 	if (add == -1)
 		free(*line);
