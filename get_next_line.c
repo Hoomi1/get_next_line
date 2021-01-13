@@ -6,7 +6,7 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 20:13:02 by cyuuki            #+#    #+#             */
-/*   Updated: 2021/01/13 15:59:57 by cyuuki           ###   ########.fr       */
+/*   Updated: 2021/01/13 18:31:47 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,27 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-static char		*add_check_cache(char **cache, char **line, char *point)
+static	int		add_check_cache(char **cache, char **line)
 {
-	char *temp;
+	char	*temp;
+	char	*point;
 
 	if ((point = ft_strchr(*cache, '\n')))
 		*point = '\0';
-	point++;
 	temp = *line;
-	*line = ft_strjoin(*line, *cache);
+	if (!(*line = ft_strjoin(*line, *cache)))
+		return (-1);
 	free(temp);
-	temp = *cache;
-	*cache = ft_strdup(point);
-	free(temp);
-	return (*line);
+	temp = NULL;
+	if (point != NULL && *(point + 1) != '\0')
+		if (!(temp = ft_strdup(point + 1)))
+			return (-1);
+	free(*cache);
+	*cache = temp;
+	if (point)
+		return (1);
+	else
+		return (0);
 }
 
 static int		add_check(char *buffer, char **line, char **cache)
@@ -60,19 +67,13 @@ int				get_next_line(int fd, char **line)
 	char			buffer[BUFFER_SIZE + 1];
 	int				add;
 	static	char	*cache;
-	char			*point;
 
 	if (fd < 0 || BUFFER_SIZE < 1 || !line || !(*line = (char *)malloc(1)))
 		return (-1);
 	**line = '\0';
 	if (cache)
-	{
-		if ((point = ft_strchr(cache, '\n')))
-			return (!(*line = add_check_cache(&cache, line, point)) ? -1 : 1);
-		add = add_check(cache, line, &point);
-		free(cache);
-		cache = NULL;
-	}
+		if ((add = add_check_cache(&cache, line)))
+			return (add);
 	while ((add = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		buffer[add] = '\0';
