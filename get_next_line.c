@@ -6,7 +6,7 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 20:13:02 by cyuuki            #+#    #+#             */
-/*   Updated: 2021/01/12 16:44:55 by cyuuki           ###   ########.fr       */
+/*   Updated: 2021/01/13 15:59:57 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,7 @@ int				get_next_line(int fd, char **line)
 	if (cache)
 	{
 		if ((point = ft_strchr(cache, '\n')))
-			return ((!(*line = add_check_cache(&cache, line, point))) ? -1 : 1);
-		/*if(!(*line = add_check_cache(&cache, line, point)))
-			return (-1);
-		else
-			return (1);*/
+			return (!(*line = add_check_cache(&cache, line, point)) ? -1 : 1);
 		add = add_check(cache, line, &point);
 		free(cache);
 		cache = NULL;
@@ -85,7 +81,10 @@ int				get_next_line(int fd, char **line)
 			break ;
 	}
 	if (add == -1)
+	{
 		free(*line);
+		return (-1);
+	}
 	if (add == 0)
 		cache = NULL;
 	return ((add == 0) ? 0 : 1);
