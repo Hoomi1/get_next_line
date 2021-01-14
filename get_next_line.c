@@ -48,7 +48,8 @@ static int		add_check(char *buffer, char **line, char **cache)
 	{
 		*point = '\0';
 		if ((*(++point)) != '\0')
-			*cache = ft_strdup(point);
+			if (!(*cache = ft_strdup(point)))
+				return (-1);
 		temp = *line;
 		if (!(*line = ft_strjoin(*line, buffer)))
 			return (-1);
