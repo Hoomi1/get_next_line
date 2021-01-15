@@ -6,13 +6,11 @@
 /*   By: cyuuki <cyuuki@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 20:13:02 by cyuuki            #+#    #+#             */
-/*   Updated: 2021/01/13 18:31:47 by cyuuki           ###   ########.fr       */
+/*   Updated: 2021/01/15 21:10:42 by cyuuki           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
 
 static	int		add_check_cache(char **cache, char **line)
 {
@@ -84,7 +82,7 @@ int				get_next_line(int fd, char **line)
 	}
 	if (add == -1)
 	{
-		free(*line);
+		free(cache);
 		return (-1);
 	}
 	if (add == 0)
